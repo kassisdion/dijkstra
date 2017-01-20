@@ -5,8 +5,8 @@
 #include <queue>   // For std::priority_queue<>
 #include <vector>
 
-#include "base.h"
-#include "graph.h"
+#include "../base.h"
+#include "../graph/graph.h"
 
 using std::priority_queue;
 using std::vector;
