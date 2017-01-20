@@ -6,9 +6,24 @@
 #include <string>
 #include <cmath>
 #include <set>
+#include <stdio.h>
+#include <stdarg.h>
+
 using namespace std;
 
 #include "dijkstra.h"
+
+void log(const char *format, ...) {
+
+  bool debug = false;
+
+  if (debug) {  
+    va_list vargs;
+    va_start(vargs, format);
+    vprintf(format, vargs);
+    va_end(vargs);
+  }
+}
 
 Dijkstra::Dijkstra(const Graph* graph, const vector<double>* arc_lengths) {
   this->m_graph = graph;
@@ -32,15 +47,15 @@ const Graph & Dijkstra::GetGraph() const {
 }
 
 void Dijkstra::RunUntilAllTargetsAreReached(int source, const vector<int>& targets) {
-  fprintf(stderr, "RununtilAllTargetsAreReached\n");
-  fprintf(stderr, "run > source=%d\n", source);
+  log("RununtilAllTargetsAreReached\n");
+  log("run > source=%d\n", source);
   for(int i = 0; i< targets.size(); i++) {
-    fprintf(stderr, "target[%d] = %d\n", i, targets[i]);
+    log("target[%d] = %d\n", i, targets[i]);
   }
-  fprintf(stderr, "\n");
+  log("\n");
   
   //Init
-  fprintf(stderr, "run > init\n\n");
+  log("run > init\n\n");
 
   priority_queue<DijkstraState> pq;
   DijkstraState initialState = {source, 0}; 
@@ -48,7 +63,7 @@ void Dijkstra::RunUntilAllTargetsAreReached(int source, const vector<int>& targe
   this->m_distances[source] = 0;
   this->m_parent_arcs[source] = -2;
 
-  fprintf(stderr, "run > starting...\n\n");
+  log("run > starting...\n\n");
   while (!pq.empty()) {
     //Get the smaller distance
     DijkstraState current = pq.top();
@@ -56,52 +71,52 @@ void Dijkstra::RunUntilAllTargetsAreReached(int source, const vector<int>& targe
 
     //Loop over arc
     for (int i = 0; i < arcs.size(); i++) {
-      fprintf(stderr, "run > parsing arc:\n");
+      log("run > parsing arc:\n");
       
       int arcId = arcs[i];
       int targetNodeId = this->m_graph->Head(arcId);
       double arcLength = this->m_arc_lengths->at(arcId);     
-      fprintf(stderr, "run > ardId=%d | targetNodeId=%d | arcLength=%.6f\n", arcId, targetNodeId, arcLength);
+      log("run > ardId=%d | targetNodeId=%d | arcLength=%.6f\n", arcId, targetNodeId, arcLength);
 
       double distanceToTarget = this->m_distances[current.node] + arcLength;
-      fprintf(stderr, "run > distance to target= %.6f\n", distanceToTarget);
+      log("run > distance to target= %.6f\n", distanceToTarget);
 
       if (this->m_distances[targetNodeId] > distanceToTarget) {
-	fprintf(stderr, "run > add target\n");
+	log("run > add target\n");
 	DijkstraState targetState = {targetNodeId, distanceToTarget};
 	pq.push(targetState);
 	this->m_distances[targetNodeId] = distanceToTarget;
 	this->m_parent_arcs[targetNodeId] = targetNodeId;
       } else {
-	fprintf(stderr, "run > don't add target\n");
+	log("run > don't add target\n");
       }
       
-      fprintf(stderr, "\n");
+      log("\n");
     }
 
     pq.pop();
   }
 
-  fprintf(stderr, "run > end...\n");
+  log("run > end...\n");
 }
 
 const vector<int>& Dijkstra::ReachedNodes() const {
-  fprintf(stderr, "ReachedNodes\n");  
+  log("ReachedNodes\n");  
   return this->m_reached_node;
 }
 
 const vector<double>& Dijkstra::Distances() const {
-  fprintf(stderr, "Distances\n");  
+  log("Distances\n");  
   return this->m_distances;
 }
 
 const vector<int>& Dijkstra::ParentArcs() const {
-  fprintf(stderr, "ParentArc\n");  
+  log("ParentArc\n");  
   return this->m_parent_arcs;
 }
 
 vector<int> Dijkstra::ArcPathFromSourceTo(int node) const {
-  fprintf(stderr, "ArcPathFromSourceTo: node=%d\n", node);
+  log("ArcPathFromSourceTo: node=%d\n", node);
   
   vector<int> path;
   int current;
@@ -109,11 +124,11 @@ vector<int> Dijkstra::ArcPathFromSourceTo(int node) const {
   try {
     current = this->m_parent_arcs[current];
 
-    fprintf(stderr, "ArcPathFromSourceTo > current=%d\n", current);
+    log("ArcPathFromSourceTo > current=%d\n", current);
     
     path.push_back(current);
   } catch (const std::out_of_range& oor) {
-    fprintf(stderr, "ArcPathFromSourceTo > no more parents\n");    
+    log("ArcPathFromSourceTo > no more parents\n");    
   }
 
   return path;
