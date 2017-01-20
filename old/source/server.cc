@@ -1,6 +1,7 @@
 #include "graph/graph.h"
 #include "base.h"
 #include "parser/parse_csv.h"
+#include "dijkstra/dijkstra.h"
 
 #include <ctime>
 #include <iostream>
@@ -32,9 +33,10 @@ int main(int argc, char *argv[], char *envp[]) {
   	 roadNetwork.graph.NumArcs(),
   	 accumulate(roadNetwork.arc_durations.begin(), roadNetwork.arc_durations.end(), 0.0d));
 
-
-  // Get User Input
+  //Init djikstra
+  Dijkstra dijkstra(&roadNetwork.graph, &roadNetwork.arc_durations);
   
+  // Get User Input
   string input = "";
   while (getline(cin, input)) {
     cout << "After\n";
@@ -89,6 +91,11 @@ int main(int argc, char *argv[], char *envp[]) {
       cout << "INVALID\n";
       continue;
     }
+
+    // TODO
+    vector<int> target;
+    target.push_back(it_to->second);
+    dijkstra.RunUntilAllTargetsAreReached(it_from->second, target);
   }
   
   return 0;
