@@ -39,7 +39,6 @@ int main(int argc, char *argv[], char *envp[]) {
   // Get User Input
   string input = "";
   while (getline(cin, input)) {
-    cout << "After\n";
     pair<double, double> from;
     pair<double, double> to;
     
@@ -92,7 +91,7 @@ int main(int argc, char *argv[], char *envp[]) {
       continue;
     }
 
-    // TODO
+    // launch Dijkstra
     vector<int> target;
     target.push_back(it_to->second);
     dijkstra.RunUntilAllTargetsAreReached(it_from->second, target);
