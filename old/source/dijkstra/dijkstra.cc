@@ -119,7 +119,7 @@ vector<int> Dijkstra::ArcPathFromSourceTo(int node) const {
   log("ArcPathFromSourceTo: node=%d\n", node);
   
   vector<int> path;
-  int current;
+  int current = node;
 
   try {
     current = this->m_parent_arcs[current];
