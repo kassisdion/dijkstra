@@ -15,7 +15,7 @@ using namespace std;
 
 void log(const char *format, ...) {
 
-  bool debug = false;
+  bool debug = trues;
 
   if (debug) {  
     va_list vargs;
@@ -86,7 +86,7 @@ void Dijkstra::RunUntilAllTargetsAreReached(int source, const vector<int>& targe
 	DijkstraState targetState = {targetNodeId, distanceToTarget};
 	pq.push(targetState);
 	this->m_distances[targetNodeId] = distanceToTarget;
-	this->m_parent_arcs[targetNodeId] = arcId;
+	this->m_parent_arcs[targetNodeId] = targetNodeId;
       } else {
 	log("run > don't add target\n");
       }
