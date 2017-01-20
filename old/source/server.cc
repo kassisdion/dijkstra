@@ -76,7 +76,7 @@ int main(int argc, char *argv[], char *envp[]) {
     
     to = make_pair(atof(token.c_str()), atof(token2.c_str()));
     
-    printf("%.6f - %.6f -- %.6f - %.6f\n", from.first, from.second, to.first, to.second);
+    //printf("%.6f - %.6f -- %.6f - %.6f\n", from.first, from.second, to.first, to.second);
     
     map<pair<double, double>, int>::iterator it_from;
     map<pair<double, double>, int>::iterator it_to;
@@ -95,6 +95,9 @@ int main(int argc, char *argv[], char *envp[]) {
     vector<int> target;
     target.push_back(it_to->second);
     dijkstra.RunUntilAllTargetsAreReached(it_from->second, target);
+
+    dijkstra.ArcPathFromSourceTo(it_to->second);
+    
   }
   
   return 0;
