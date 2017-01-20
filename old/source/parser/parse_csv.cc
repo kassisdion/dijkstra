@@ -12,6 +12,7 @@ using namespace std;
 
 double DistanceBetweenLatLngs(pair<double, double> ll1,
                               pair<double, double> ll2) {
+
   double lat1 = ll1.first;
   double lng1 = ll1.second;
   double lat2 = ll2.first;

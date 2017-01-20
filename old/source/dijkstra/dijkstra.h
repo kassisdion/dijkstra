@@ -16,7 +16,9 @@ struct DijkstraState {
   double distance;
 
   // So that we can do std::priority_queue<DijkstraState>. Beware the ordering!
-  bool operator<(const DijkstraState& other) const;
+  bool operator<(const DijkstraState& other) const {
+    return distance < other.distance; 
+  }
 };
 
 // This class helps to run several Dijkstra computation serially (it it NOT
@@ -52,6 +54,16 @@ class Dijkstra {
   // Returns the full shortest path (a sequence of arcs) from the source of
   // the last run to "node", assuming that "node" was reached.
   vector<int> ArcPathFromSourceTo(int node) const;
+
+ private:
+  //Argument from constructor
+  const Graph* m_graph;
+  const vector<double>* m_arc_lengths;
+
+  //Private (custom) argument
+  vector<int> m_reached_node;
+  vector<double> m_distances;
+  vector<int> m_parent_arcs;
 };
 
 #endif  // DIJKSTRA_H_
