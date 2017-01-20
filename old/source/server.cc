@@ -96,8 +96,16 @@ int main(int argc, char *argv[], char *envp[]) {
     target.push_back(it_to->second);
     dijkstra.RunUntilAllTargetsAreReached(it_from->second, target);
 
-    dijkstra.ArcPathFromSourceTo(it_to->second);
-    
+    // handle result
+    vector<int> path = dijkstra.ArcPathFromSourceTo(it_to->second);
+    vector<double> distances = dijkstra.Distances();
+
+    double pathLength = 0;
+    for (int i=0; i < path.size(); i++) {
+      pathLength += distances[path[i]];
+    }
+
+    printf("%.6f\n", pathLength);
   }
   
   return 0;
